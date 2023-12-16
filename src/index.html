@@ -7,8 +7,16 @@
 	<link rel="icon" href="/assets/favicon.png">
 </head>
 <body>
+	<header>
+			<h1>ToDo List</h1>
+	</header>
 	<main>
-		<h1>🌴 Welcome to the jungle 🌴</h1>
+		<section>
+			{% include 'search.html' %}
+		</section>
+		<section>
+			{% include 'list.html' %}
+		</section>
 	</main>
 </body>
 </html>

@@ -1,0 +1,22 @@
+<table>
+	<thead>
+	<tr>
+		<th>Item</th>
+		<th>Status</th>
+		<th>Actions</th>
+	</tr>
+	</thead>
+	<tbody>
+	{% for item in list %}
+		<tr>
+			<td>{{% item.name %}}</td>
+			<td>{{% item.status %}}</td>
+			<td>
+				<a href="/todos/{{% item.id %}}/status?newstate=open">Open</a>
+				<a href="/todos/{{% item.id %}}/status?newstate=in_progress">In Progress</a>
+				<a href="/todos/{{% item.id %}}/status?newstate=close">Close</a>
+			</td>
+		</tr>
+	{% endfor %}
+	</tbody>
+</table>
