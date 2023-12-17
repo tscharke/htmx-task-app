@@ -10,9 +10,9 @@ type TemplateItem<T> = {
 };
 export const processTemplateItem = <T>({ data, template, itemName }: TemplateItem<T>): string => {
 	let result = '';
-	for (let item of data) {
+	for (const item of data) {
 		let itemResult = template;
-		for (let key in item) {
+		for (const key in item) {
 			itemResult = itemResult.replace(new RegExp(`{{% ${itemName}.${key} %}}`, 'g'), `${item[key]}`);
 		}
 		result += itemResult;
@@ -27,7 +27,7 @@ const processForLoopTemplate = <T>(template: string, allDataElements: ReadonlyAr
 	const listMatch = template.match(/\{% for .+? in (.+?) %\}/);
 	if (!listMatch) return template;
 
-	const loopTemplateMatch = template.match(/\{% for .+? in .+? %\}([\s\S]*?)\{% endfor %\}/);
+	const loopTemplateMatch = template.match(/\{% for .+? in .+? %\}([\s\S]*?)\{% endFor %\}/);
 	if (!loopTemplateMatch) return template;
 
 	const result = processTemplateItem({
@@ -35,7 +35,7 @@ const processForLoopTemplate = <T>(template: string, allDataElements: ReadonlyAr
 		template: loopTemplateMatch[1],
 		itemName: iteratorMatch[1],
 	});
-	return template.replace(/\{% for .+? in .+? %\}([\s\S]*?)\{% endfor %\}/, result);
+	return template.replace(/\{% for .+? in .+? %\}([\s\S]*?)\{% endFor %\}/, result);
 };
 
 export const executeTemplating = <T>(

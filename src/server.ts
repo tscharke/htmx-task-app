@@ -12,6 +12,7 @@ const PORT = process.env.SERVER_PORT;
 
 const app = express();
 app.use(cors());
+app.use(express.urlencoded({ extended: false }));
 
 app.get('/', (request: Request<{ filter?: string }>, response: Response) => {
 	const {
@@ -27,6 +28,7 @@ app.get('/', (request: Request<{ filter?: string }>, response: Response) => {
 	const mainContent = readFileSync('./src/index.html', { encoding: 'utf-8' });
 	const result = executeTemplating<ToDo>(mainContent, data, customProcessingTemplateItems);
 
+	response.header('Content-Security-Policy', "img-src 'self'");
 	response.set('Content-Type', 'text/html');
 	response.send(result);
 });
@@ -38,6 +40,41 @@ app.get('/assets/:asset', (request: Request<{ asset: string }>, response: Respon
 
 	response.set('Content-Type', 'image/png');
 	response.sendFile(asset, { root: './assets' });
+});
+
+app.get('/todos/new', (_, response: Response) => {
+	response.set('Content-Type', 'text/html');
+	response.sendFile('create.html', { root: './src' });
+});
+
+app.post('/todos/new', (request: Request, response: Response) => {
+	const {
+		body: { issue, status },
+	} = request;
+
+	database.save({ name: issue, status });
+
+	response.redirect('/');
+});
+
+app.post('/todos/status', (request: Request, response: Response) => {
+	const {
+		body: { id, status },
+	} = request;
+
+	database.findOneAndUpdate({ id }, { status });
+
+	response.redirect('/');
+});
+
+app.post('/todos/:id/delete', (request: Request<{ id: number }>, response: Response) => {
+	const {
+		params: { id },
+	} = request;
+
+	database.findOneAndRemove({ id });
+
+	response.redirect('/');
 });
 
 app.all('*', (_, response: Response) => response.redirect('/'));

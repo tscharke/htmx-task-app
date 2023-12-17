@@ -12,11 +12,17 @@
 			<td>{{% item.name %}}</td>
 			<td>{{% item.status %}}</td>
 			<td>
-				<a href="/todos/{{% item.id %}}/status?newstate=open">Open</a>
-				<a href="/todos/{{% item.id %}}/status?newstate=in_progress">In Progress</a>
-				<a href="/todos/{{% item.id %}}/status?newstate=close">Close</a>
+				<form action="/todos/status" method="post">
+					<input name="id" type="hidden" value="{{% item.id %}}">
+					<button name="status" value="open">Open</button>
+					<button name="status" value="in_progress">In Progress</button>
+					<button name="status" value="close">Close</button>
+				</form>
+				<form action="/todos/{{% item.id %}}/delete" method="post">
+					<button>❌</button>
+				</form>
 			</td>
 		</tr>
-	{% endfor %}
+	{% endFor %}
 	</tbody>
 </table>
