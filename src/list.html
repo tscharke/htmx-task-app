@@ -1,7 +1,7 @@
 <table>
 	<thead>
 	<tr>
-		<th>Item</th>
+		<th>Task Name</th>
 		<th>Status</th>
 		<th>Actions</th>
 	</tr>
@@ -12,13 +12,13 @@
 			<td>{{% item.name %}}</td>
 			<td>{{% item.status %}}</td>
 			<td>
-				<form action="/todos/status" method="post">
+				<form action="/tasks/status" method="post">
 					<input name="id" type="hidden" value="{{% item.id %}}">
 					<button name="status" value="open">Open</button>
 					<button name="status" value="in_progress">In Progress</button>
 					<button name="status" value="close">Close</button>
 				</form>
-				<form action="/todos/{{% item.id %}}/delete" method="post">
+				<form action="/tasks/{{% item.id %}}/delete" method="post">
 					<button>❌</button>
 				</form>
 			</td>

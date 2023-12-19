@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import express, { Request, Response } from 'express';
 import { readFileSync } from 'fs';
 import * as process from 'process';
-import { database, ToDo } from './database.ts';
+import { database, Task } from './database.ts';
 import { executeTemplating } from './templateEngine.ts';
 
 dotenv.config();
@@ -26,7 +26,7 @@ app.get('/', (request: Request<{ filter?: string }>, response: Response) => {
 		data: [{ filter: filter ?? '' }],
 	};
 	const mainContent = readFileSync('./src/index.html', { encoding: 'utf-8' });
-	const result = executeTemplating<ToDo>(mainContent, data, customProcessingTemplateItems);
+	const result = executeTemplating<Task>(mainContent, data, customProcessingTemplateItems);
 
 	response.header('Content-Security-Policy', "img-src 'self'");
 	response.set('Content-Type', 'text/html');
@@ -42,22 +42,22 @@ app.get('/assets/:asset', (request: Request<{ asset: string }>, response: Respon
 	response.sendFile(asset, { root: './assets' });
 });
 
-app.get('/todos/new', (_, response: Response) => {
+app.get('/tasks/new', (_, response: Response) => {
 	response.set('Content-Type', 'text/html');
 	response.sendFile('create.html', { root: './src' });
 });
 
-app.post('/todos/new', (request: Request, response: Response) => {
+app.post('/tasks/new', (request: Request, response: Response) => {
 	const {
-		body: { issue, status },
+		body: { name, status },
 	} = request;
 
-	database.save({ name: issue, status });
+	database.save({ name, status });
 
 	response.redirect('/');
 });
 
-app.post('/todos/status', (request: Request, response: Response) => {
+app.post('/tasks/status', (request: Request, response: Response) => {
 	const {
 		body: { id, status },
 	} = request;
@@ -67,7 +67,7 @@ app.post('/todos/status', (request: Request, response: Response) => {
 	response.redirect('/');
 });
 
-app.post('/todos/:id/delete', (request: Request<{ id: number }>, response: Response) => {
+app.post('/tasks/:id/delete', (request: Request<{ id: number }>, response: Response) => {
 	const {
 		params: { id },
 	} = request;

@@ -3,22 +3,22 @@
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>HTMX - Playground</title>
+	<title>HTMX - Tasks App</title>
 	<link rel="icon" href="/assets/favicon.png">
 </head>
 <body>
 <header>
-	<h1>ToDo List</h1>
+	<h1>Tasks</h1>
 </header>
 <main>
 	<section>
-		<form action="/todos/new" method="post">
+		<form action="/tasks/new" method="post">
 			<fieldset>
-				<legend>To Do</legend>
+				<legend>Task</legend>
 				<div class="table rows">
 					<p>
-						<label for="issue">Issue</label>
-						<input name="issue" id="issue" type="text" placeholder="Issue" value="" required>
+						<label for="name">name</label>
+						<input name="name" type="text" placeholder="Name of task" value="" required>
 					</p>
 					<p>
 						<label for="status">Status</label>

@@ -1,53 +1,53 @@
 import { every, filter, findIndex, maxBy } from 'lodash';
 
-export type ToDo = { id: number; name: string; status: 'open' | 'in_progress' | 'close' };
-type ToDoWithAtLeastOneKey = { [K in keyof ToDo]: Pick<ToDo, K> };
-type AtLeastOne = Partial<ToDo> & ToDoWithAtLeastOneKey[keyof ToDoWithAtLeastOneKey];
+export type Task = { id: number; name: string; status: 'open' | 'in_progress' | 'close' };
+type TasksWithAtLeastOneKey = { [K in keyof Task]: Pick<Task, K> };
+type AtLeastOne = Partial<Task> & TasksWithAtLeastOneKey[keyof TasksWithAtLeastOneKey];
 
-const listOfToDo: ToDo[] = [
+const listOfTasks: Task[] = [
 	{
 		id: 1,
-		name: '1. Item',
+		name: '1. Task',
 		status: 'open',
 	},
 	{
 		id: 2,
-		name: '2. Item',
+		name: '2. Task',
 		status: 'in_progress',
 	},
 	{
 		id: 3,
-		name: '3. Item',
+		name: '3. Task',
 		status: 'close',
 	},
 ];
 
 export const database = {
-	findAll: () => listOfToDo,
+	findAll: () => listOfTasks,
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	findBy: (expression: Record<string, any>) =>
-		filter<ToDo>(listOfToDo, (item) =>
-			every(expression, (value, key) => key in item && item[key as keyof ToDo]?.toString().includes(value.toString())),
-		) as ToDo[],
-	save: ({ name, status }: Pick<ToDo, 'name' | 'status'>) => {
-		const { id: latestId = 4711 } = maxBy(listOfToDo, 'id') ?? {};
-		listOfToDo.push({
+		filter<Task>(listOfTasks, (item) =>
+			every(expression, (value, key) => key in item && item[key as keyof Task]?.toString().includes(value.toString())),
+		) as Task[],
+	save: ({ name, status }: Pick<Task, 'name' | 'status'>) => {
+		const { id: latestId = 4711 } = maxBy(listOfTasks, 'id') ?? {};
+		listOfTasks.push({
 			id: latestId + 1,
 			name,
 			status,
 		});
 	},
-	findOneAndUpdate(filter: Pick<ToDo, 'id'>, update: AtLeastOne) {
-		const index = findIndex(listOfToDo, { id: Number(filter.id) });
+	findOneAndUpdate(filter: Pick<Task, 'id'>, update: AtLeastOne) {
+		const index = findIndex(listOfTasks, { id: Number(filter.id) });
 		if (index !== -1) {
-			listOfToDo[index] = {
-				...listOfToDo[index],
+			listOfTasks[index] = {
+				...listOfTasks[index],
 				...update,
 			};
 		}
 	},
-	findOneAndRemove(filter: Pick<ToDo, 'id'>) {
-		const index = findIndex(listOfToDo, { id: Number(filter.id) });
-		listOfToDo.splice(index, 1);
+	findOneAndRemove(filter: Pick<Task, 'id'>) {
+		const index = findIndex(listOfTasks, { id: Number(filter.id) });
+		listOfTasks.splice(index, 1);
 	},
 };
