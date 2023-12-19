@@ -34,4 +34,4 @@ pnpm install
 pnpm run start
 ```
 
-🤩 After starting the development-server, the application is showing up under [http://localhost:3001](http://localhost:3001).
+🤩 After starting the development-server, the application is showing up under [http://localhost:3000](http://localhost:3000).
