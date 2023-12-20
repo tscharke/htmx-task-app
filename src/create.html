@@ -1,40 +1,39 @@
 <!doctype html>
 <html lang="en">
-<head>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>HTMX - Tasks App</title>
-	<link rel="icon" href="/assets/favicon.png">
-</head>
-<body>
+{% include '_header.html' %}
+<body class="full text-base font-normal flex flex-col bg-gradient-to-r from-white to-[#ffc600] gap-8 m-4">
 <header>
-	<h1>Tasks</h1>
+	<h1 class="text-4xl font-bold leading-none tracking-wider">Create new Task</h1>
 </header>
-<main>
+<main class="flex flex-col gap-4">
+	<p>
+		<a href="/" class="underline">⬅️ Back</a>
+	</p>
 	<section>
 		<form action="/tasks/new" method="post">
-			<fieldset>
-				<legend>Task</legend>
-				<div class="table rows">
-					<p>
-						<label for="name">name</label>
-						<input name="name" type="text" placeholder="Name of task" value="" required>
-					</p>
-					<p>
-						<label for="status">Status</label>
-						<select name="status" id="status">
-							<option value="open">Open</option>
-							<option value="in_progress">In progress</option>
-							<option value="close">Close</option>
-						</select>
-					</p>
-				</div>
-				<button>Save</button>
+			<fieldset class="flex flex-row gap-4">
+				<p>
+					<label for="name">Name:</label>
+					<input id="name"
+								 name="name"
+								 type="text"
+								 placeholder="Name of task"
+								 value=""
+								 required
+								 class="border rounded-[7px] leading-4 focus:outline-0"
+					/>
+				</p>
+				<p>
+					<label for="status">Status:</label>
+					<select name="status" id="status" class="border rounded-[7px] leading-4">
+						<option value="open">Open</option>
+						<option value="in_progress">In progress</option>
+						<option value="close">Close</option>
+					</select>
+				</p>
+				<button class="text-sm border border-black m-0 p-1 rounded shadow-md">Save</button>
 			</fieldset>
 		</form>
-		<p>
-			<a href="/">⬅️ Back</a>
-		</p>
 	</section>
 </main>
 </body>

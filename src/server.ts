@@ -37,14 +37,18 @@ app.get('/assets/:asset', (request: Request<{ asset: string }>, response: Respon
 	const {
 		params: { asset },
 	} = request;
+	console.log('[xxxx|]:', asset);
 
 	response.set('Content-Type', 'image/png');
 	response.sendFile(asset, { root: './assets' });
 });
 
 app.get('/tasks/new', (_, response: Response) => {
+	const mainContent = readFileSync('./src/create.html', { encoding: 'utf-8' });
+	const result = executeTemplating<Task>(mainContent, []);
+
 	response.set('Content-Type', 'text/html');
-	response.sendFile('create.html', { root: './src' });
+	response.send(result);
 });
 
 app.post('/tasks/new', (request: Request, response: Response) => {
