@@ -1,6 +1,13 @@
-<form action="/" method="get">
-	<label for="filter">Filter</label>
-	<input id="filter" type="search" name="filter" value="{{% query.filter %}}" />
-	<button type="submit">Filter</button>
-</form>
-<a href="/tasks/new">Add New Task</a>
+<section class="flex flow-row items-center gap-4">
+	<form action="/" method="get">
+		<label for="filter">Filter:</label>
+		<input id="filter"
+					 name="filter"
+					 type="search"
+					 value="{{% query.filter %}}"
+					 placeholder="Task name"
+					 class="border rounded-[7px] leading-4 focus:outline-0"/>
+		<button type="submit" class="text-sm border border-black m-2 p-1 rounded shadow-md">Filter</button>
+	</form>
+	<a href="/tasks/new" class="underline">Add New Task</a>
+</section>

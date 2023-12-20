@@ -1,19 +1,12 @@
 <!doctype html>
 <html lang="en">
-<head>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>HTMX - Tasks App</title>
-	<link rel="icon" href="/assets/favicon.png">
-</head>
-<body>
+{% include '_header.html' %}
+<body class="full text-base font-normal flex flex-col bg-gradient-to-r from-white to-[#ffc600] gap-8 m-4">
 	<header>
-			<h1>Tasks</h1>
+		<h1 class="text-4xl font-bold leading-none tracking-wider">Tasks</h1>
 	</header>
-	<main>
-		<section>
-			{% include 'search.html' %}
-		</section>
+	<main class="flex flex-col gap-4">
+		{% include 'search.html' %}
 		<section>
 			{% include 'list.html' %}
 		</section>

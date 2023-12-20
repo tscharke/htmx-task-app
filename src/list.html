@@ -1,25 +1,31 @@
-<table>
-	<thead>
-	<tr>
-		<th>Task Name</th>
-		<th>Status</th>
-		<th>Actions</th>
-	</tr>
+<table class="w-full text-left table-auto min-w-max">
+	<thead class="text-2xl font-bold leading-none tracking-tight">
+		<tr>
+			<th class="pb-2 border-b border-black">Name</th>
+			<th class="pb-2 border-b border-black">Status</th>
+			<th class="pb-2 border-b border-black">Actions</th>
+		</tr>
 	</thead>
 	<tbody>
 	{% for item in list %}
 		<tr>
-			<td>{{% item.name %}}</td>
-			<td>{{% item.status %}}</td>
-			<td>
+			<td class="py-2 border-b border-black">{{% item.name %}}</td>
+			<td class="py-2 border-b border-black uppercase">{{% item.status %}}</td>
+			<td class="py-2 border-b border-black flex flex-row items-center">
 				<form action="/tasks/status" method="post">
-					<input name="id" type="hidden" value="{{% item.id %}}">
-					<button name="status" value="open">Open</button>
-					<button name="status" value="in_progress">In Progress</button>
-					<button name="status" value="close">Close</button>
+					<input name="id" type="hidden" value="{{% item.id %}}" >
+					<button name="status" value="open" class="text-sm border border-black p-1 rounded shadow-md">
+						Open
+					</button>
+					<button name="status" value="in_progress" class="text-sm border border-black m-2 p-1 rounded shadow-md">
+						In Progress
+					</button>
+					<button name="status" value="close" class="text-sm border border-black m-2 p-1 rounded shadow-md">
+						Close
+					</button>
 				</form>
 				<form action="/tasks/{{% item.id %}}/delete" method="post">
-					<button>❌</button>
+					<button class="text-sm border border-black m-2 p-1 rounded shadow-md">❌</button>
 				</form>
 			</td>
 		</tr>
