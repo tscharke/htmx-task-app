@@ -1,0 +1,16 @@
+doctype html
+html(lang='en')
+	include _includes/header.pug
+body(class='full text-base font-normal flex flex-col bg-gray-50 gap-8 m-4')
+	header(class='flex flex-row items-center justify-between')
+		h1(class='text-[2rem] font-bold tracking-tighter').
+			Tasks
+		nav
+			ul
+				li
+					a(class='underline' href='/tasks/new').
+						Add New Task
+	main(class='flex flex-col gap-4')
+		include _includes/search.pug
+		section
+			include _includes/list.pug

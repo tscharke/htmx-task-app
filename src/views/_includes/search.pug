@@ -1,0 +1,28 @@
+section
+  form(action='/' method='get')
+    ul(class='flex flow-row items-center gap-4')
+      li
+        button(
+          disabled
+          class='text-sm border border-black disabled:border-gray-300 p-1 disabled:text-gray-500 disabled:cursor-not-allowed rounded shadow-md'
+        ) All
+      li
+        button(
+          disabled
+          class='text-sm border border-black disabled:border-gray-300 p-1 disabled:text-gray-500 disabled:cursor-not-allowed rounded shadow-md'
+        ) Active
+      li
+        button(
+          disabled
+          class='text-sm border border-black disabled:border-gray-300 p-1 disabled:text-gray-500 disabled:cursor-not-allowed rounded shadow-md'
+        ) Completed
+      li(class='flex flex-row absolute end-4 items-center gap-2')
+        label(for='filter')
+        input#filter(
+          name='filter'
+          type='search'
+          value=query.filter
+          placeholder='Task name'
+          class='border rounded-[7px] leading-4 focus:outline-0'
+        )
+        button(type='submit' class='text-sm border border-black p-1 rounded shadow-md') Filter

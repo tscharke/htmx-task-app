@@ -1,47 +1,50 @@
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express, { Request, Response } from 'express';
-import { readFileSync } from 'fs';
+import { expressCspHeader, SELF } from 'express-csp-header';
 import path from 'path';
-import * as process from 'process';
-import { database, Task } from './database.ts';
-import { executeTemplating } from './templateEngine.ts';
+import process from 'process';
+import pug from 'pug';
+import favicon from 'serve-favicon';
+import { database } from './database.ts';
 
 dotenv.config();
 
 const app = express();
 app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'pug');
 app.set('serverPort', process.env.SERVER_PORT);
 
 app.use(cors());
+app.use(
+	expressCspHeader({
+		directives: {
+			'img-src': [SELF],
+		},
+	}),
+);
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'assets')));
+app.use(favicon(path.join(__dirname, '../assets', 'favicon.ico')));
 
 app.get('/', (request: Request<{ filter?: string }>, response: Response) => {
 	const {
-		query: { filter = null },
+		query: { filter = '' },
 	} = request;
+	const data = filter ? database.findBy({ name: filter.toString() }) : database.findAll() ?? [];
+	const template = pug.compileFile(path.join(app.get('views'), 'index.pug'));
+	const markup = template({ query: { filter }, list: data });
 
-	const data = filter ? database.findBy({ name: filter.toString() }) : database.findAll();
-
-	const customProcessingTemplateItems = {
-		itemName: 'query',
-		data: [{ filter: filter ?? '' }],
-	};
-	const mainContent = readFileSync(app.get('views') + '/index.html', { encoding: 'utf-8' });
-	const result = executeTemplating<Task>(mainContent, data, customProcessingTemplateItems);
-
-	response.header('Content-Security-Policy', "img-src 'self'");
 	response.set('Content-Type', 'text/html');
-	response.send(result);
+	response.send(markup);
 });
 
 app.get('/tasks/new', (_, response: Response) => {
-	const mainContent = readFileSync(app.get('views') + '/create.html', { encoding: 'utf-8' });
-	const result = executeTemplating<Task>(mainContent, []);
+	const template = pug.compileFile(path.join(app.get('views'), 'create.pug'));
+	const markup = template();
 
 	response.set('Content-Type', 'text/html');
-	response.send(result);
+	response.send(markup);
 });
 
 app.post('/tasks/new', (request: Request, response: Response) => {
