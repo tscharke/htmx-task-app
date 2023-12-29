@@ -2,17 +2,20 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import express, { Request, Response } from 'express';
 import { readFileSync } from 'fs';
+import path from 'path';
 import * as process from 'process';
 import { database, Task } from './database.ts';
 import { executeTemplating } from './templateEngine.ts';
 
 dotenv.config();
 
-const PORT = process.env.SERVER_PORT;
-
 const app = express();
+app.set('views', path.join(__dirname, 'views'));
+app.set('serverPort', process.env.SERVER_PORT);
+
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, 'assets')));
 
 app.get('/', (request: Request<{ filter?: string }>, response: Response) => {
 	const {
@@ -25,7 +28,7 @@ app.get('/', (request: Request<{ filter?: string }>, response: Response) => {
 		itemName: 'query',
 		data: [{ filter: filter ?? '' }],
 	};
-	const mainContent = readFileSync('./src/index.html', { encoding: 'utf-8' });
+	const mainContent = readFileSync(app.get('views') + '/index.html', { encoding: 'utf-8' });
 	const result = executeTemplating<Task>(mainContent, data, customProcessingTemplateItems);
 
 	response.header('Content-Security-Policy', "img-src 'self'");
@@ -33,18 +36,8 @@ app.get('/', (request: Request<{ filter?: string }>, response: Response) => {
 	response.send(result);
 });
 
-app.get('/assets/:asset', (request: Request<{ asset: string }>, response: Response) => {
-	const {
-		params: { asset },
-	} = request;
-	console.log('[xxxx|]:', asset);
-
-	response.set('Content-Type', 'image/png');
-	response.sendFile(asset, { root: './assets' });
-});
-
 app.get('/tasks/new', (_, response: Response) => {
-	const mainContent = readFileSync('./src/create.html', { encoding: 'utf-8' });
+	const mainContent = readFileSync(app.get('views') + '/create.html', { encoding: 'utf-8' });
 	const result = executeTemplating<Task>(mainContent, []);
 
 	response.set('Content-Type', 'text/html');
@@ -83,6 +76,6 @@ app.post('/tasks/:id/delete', (request: Request<{ id: number }>, response: Respo
 
 app.all('*', (_, response: Response) => response.redirect('/'));
 
-app.listen(PORT, () => {
-	console.log(`Server is listening on port ${PORT}!`);
+app.listen(app.get('serverPort'), () => {
+	console.log(`Server is listening on port ${app.get('serverPort')}!`);
 });

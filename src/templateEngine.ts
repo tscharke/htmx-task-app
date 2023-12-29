@@ -45,7 +45,7 @@ export const executeTemplating = <T>(
 ): string =>
 	content.replace(INCLUDE_PATTERN, (_, fileName) => {
 		try {
-			const templateContent = readFileSync(`./src/${fileName}`, { encoding: 'utf-8' });
+			const templateContent = readFileSync(`./src/_includes/${fileName}`, { encoding: 'utf-8' });
 			const result = processForLoopTemplate(templateContent, data);
 			return processingTemplateItems
 				? processTemplateItem({
