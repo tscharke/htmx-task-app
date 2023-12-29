@@ -2,8 +2,15 @@
 <html lang="en">
 {% include 'header.html' %}
 <body class="full text-base font-normal flex flex-col bg-gradient-to-r from-white to-[#ffc600] gap-8 m-4">
-	<header>
+	<header class="flex flex-row items-center justify-between">
 		<h1 class="text-4xl font-bold leading-none tracking-wider">Tasks</h1>
+		<nav>
+			<ul>
+				<li>
+					<a href="/tasks/new" class="underline">Add New Task</a>
+				</li>
+			</ul>
+		</nav>
 	</header>
 	<main class="flex flex-col gap-4">
 		{% include 'search.html' %}
