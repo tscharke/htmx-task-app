@@ -1,0 +1,23 @@
+table(class='w-full text-left table-auto min-w-max')
+  thead(class='text-2xl font-bold leading-none tracking-tight')
+    tr
+      th(class='pb-2 border-b border-black w-[250px]') Name
+      th(class='pb-2 border-b border-black w-[150px]') Status
+      th(class='pb-2 border-b border-black') Actions
+  tbody
+    each item in list
+      tr
+        td(class='py-2 border-b border-black') #{ item.name }
+        td(class='py-2 border-b border-black uppercase') #{ item.status }
+        td(class='py-2 border-b border-black flex flex-row items-center')
+          form(action='/tasks/status' method='post')
+            input(name='id' type='hidden' value=item.id)
+            button(name='status' value='open' class='text-sm border border-black p-1 rounded shadow-md').
+              Open
+            button(name='status' value='in_progress' class='text-sm border border-black m-2 p-1 rounded shadow-md').
+              In Progress
+            button(name='status' value='close' class='text-sm border border-black m-2 p-1 rounded shadow-md').
+              Close
+          form(action='/tasks/'+ item.id + '/delete' method='post')
+            button(class='text-sm border border-black m-2 p-1 rounded shadow-md').
+              ❌
